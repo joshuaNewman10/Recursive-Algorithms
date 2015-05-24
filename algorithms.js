@@ -49,11 +49,18 @@ var recursiveSum = function(n){
 
 // Problem #3
 // Check if a given number is a power of 2
-// PowerOfTwo(8) -> true
-// PowerOfTwo(9) -> false
+// isPowerOfTwo(8) -> true
+// isPowerOfTwo(9) -> false
 
 var isPowerOfTwo = function(n){
-
+  var quotient = n / 2;
+  if (quotient === 1) {
+    return true;
+  } else if (quotient % 2 === 1 || quotient < 1) {
+    return false;
+  } else {
+    return isPowerOfTwo(quotient);
+  }
 };
 
 ///////////////////////////////////////////////////////////////////////
