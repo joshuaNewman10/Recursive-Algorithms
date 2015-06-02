@@ -21,7 +21,11 @@
 // countVowels('abcedfg') ->2
 
 var countVowels = function(str){
-
+  var count = 0;
+  if (str.length > 1) {
+    count = countVowels(str.substring(1));
+  }
+  return count + /[aeiou]/.test(str[0]);
 };
 
 ///////////////////////////////////////////////////////////////////////
@@ -35,7 +39,13 @@ var countVowels = function(str){
 // sumDigits(12) → 3
 
 var recursiveSum = function(n){
-
+  n = '' + n;
+  var sum = 0;
+  var digit = +n[0];
+  if (n[1]) {
+    sum = recursiveSum(n.substring(1));
+  }
+  return sum + digit;
 };
 
 ///////////////////////////////////////////////////////////////////////
@@ -44,11 +54,18 @@ var recursiveSum = function(n){
 
 // Problem #3
 // Check if a given number is a power of 2
-// PowerOfTwo(8) -> true
-// PowerOfTwo(9) -> false
+// isPowerOfTwo(8) -> true
+// isPowerOfTwo(9) -> false
 
 var isPowerOfTwo = function(n){
-
+  var quotient = n / 2;
+  if (quotient === 1) {
+    return true;
+  } else if (quotient % 2 === 1 || quotient < 1) {
+    return false;
+  } else {
+    return isPowerOfTwo(quotient);
+  }
 };
 
 ///////////////////////////////////////////////////////////////////////
@@ -64,9 +81,17 @@ var isPowerOfTwo = function(n){
 // (For example, if the initial investment is 1000 and the interest rate is 10 percent,
 // then after one year the investment will be worth 1100, after two years 1210, after three years 1331, etc.)
 
-var invest = function(amount){
-
+var invest = function(amount, interestRate, numberOfYears){
+  if (numberOfYears <= 0) {
+    return amount;
+  }
+  var accrument = amount * (interestRate / 100);
+  return invest(amount + accrument, interestRate, numberOfYears - 1);
 };
+
+//console.log(invest(1000, 10, 3)); //1331
+//console.log(invest(1000, 10, 2)); //1210
+//console.log(invest(1000, 10, 1)); //1100
 
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
@@ -82,7 +107,14 @@ var invest = function(amount){
 //    printRangeUpDown(4, 10);
 //    console.logs: 4,5,6,7,8,9,10,9,8,7,6,5,4
 var printRangeUpDown = function(min, max){
+  if (min === max) {
+    console.log(min);
+    return;
+  }
 
+  console.log(min);
+  printRangeUpDown(min + 1, max);
+  console.log(min);
 };
 
 ///////////////////////////////////////////////////////////////////////
@@ -96,9 +128,28 @@ var printRangeUpDown = function(min, max){
 // remember, binary tree's are different from binary search trees!
 // you'll need to create a binary tree constructor!
 
-var binaryTreeSum = function(tree){
+function BinaryTree(value, left, right) {
+  this.value = value || null;
+  this.left = left || null;
+  this.right = right || null;
+}
 
+var binaryTreeSum = function(tree){
+  var sum = tree.value || 0;
+  if (tree.left) sum += binaryTreeSum(tree.left);
+  if (tree.right) sum += binaryTreeSum(tree.right);
+  return sum;
 };
+
+var tree = new BinaryTree(100);
+tree.left = new BinaryTree(100);
+tree.right = new BinaryTree(100);
+tree.right.left = new BinaryTree(200);
+tree.right.right = new BinaryTree(200);
+tree.left.left = new BinaryTree(200);
+tree.left.right = new BinaryTree(200);
+//console.log(binaryTreeSum(tree));
+
 
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
